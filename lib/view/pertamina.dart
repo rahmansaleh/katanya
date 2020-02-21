@@ -43,7 +43,7 @@ class _PertaminaState extends State<Pertamina> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Provinsi " + responseJSONPertamina[i]['wilayah'],
+                        responseJSONPertamina[i]['wilayah'],
                         style: TextStyle(fontSize: 20.0, color: Colors.blue),
                       ),
                       Text("Pertalite : " + responseJSONPertamina[i]['pertalite']),
