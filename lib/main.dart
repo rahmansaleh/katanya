@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:toast/toast.dart';
 
 import 'view/plane.dart';
-import 'view/user.dart';
+import 'view/pertamina.dart';
 import 'view/profile.dart';
 
 import 'helper/api.dart';
@@ -345,6 +345,7 @@ class _MainMenuState extends State<MainMenu> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
+          title: Text("Kata(?)nya"),
           actions: <Widget>[
             IconButton(
               onPressed: (){
@@ -357,7 +358,7 @@ class _MainMenuState extends State<MainMenu> {
         body: TabBarView(
           children: <Widget>[
             Plane(),
-            User(),
+            Pertamina(),
             Profile(),
           ],
         ),
@@ -373,8 +374,8 @@ class _MainMenuState extends State<MainMenu> {
               text: "Plane",
             ),
             Tab(
-              icon: Icon(Icons.group),
-              text: "Users",
+              icon: Icon(Icons.attach_money),
+              text: "Pertamina",
             ),
             Tab(
               icon: Icon(Icons.account_circle),
