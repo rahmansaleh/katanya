@@ -3,13 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
+// import 'package:toast/toast.dart';
 
 import 'view/plane.dart';
 import 'view/pertamina.dart';
 import 'view/profile.dart';
 
 import 'helper/api.dart';
+import 'view/toast.dart' as Toast;
 
 void main(){
   runApp(MaterialApp(
@@ -56,31 +57,46 @@ class _LoginState extends State<Login> {
           "password": password
         }
     );
-    final data = jsonDecode(response.body);
 
-    int value = data['value'];
-    String _pesan = data['message'];
+    if (response.statusCode == 200) {
 
-    String _email = data['email'];
-    String _fullname = data['fullname'];
-    String _id = data['id'];
+      Map<String, dynamic> data = jsonDecode(response.body);
 
-    if(value == 1){
-      setState(() {
-        _loginStatus = LoginStatus.signIn;
-        savePref(
-          value,
-          _email,
-          _fullname,
-          _id,
-        );
-      });
-      Toast.show(_pesan + ", Selamat datang " + _fullname, context);
-      print(_pesan);
+      if (data.containsKey("data")) {
+        
+        int value = data['value'];
+        String _pesan = data['message'];
+
+        String _email = data['email'];
+        String _fullname = data['fullname'];
+        String _id = data['id'];
+
+        if(value == 1){
+          setState(() {
+            _loginStatus = LoginStatus.signIn;
+            savePref(
+              value,
+              _email,
+              _fullname,
+              _id,
+            );
+          });
+          Toast.show("$_pesan, Selamat datang $_fullname");
+          print(_pesan);
+        } else {
+          Toast.show("$_pesan, Periksa kembali data anda!");
+          print(_pesan);
+        }
+      } else {
+
+        Toast.show("Data Profil tidak ditemukan");
+      }      
+
     } else {
-      Toast.show(_pesan + ", Periksa kembali data anda!", context);
-      print(_pesan);
+      Toast.show("Gagal menghubungi Server");
+      print("Status Code ${response.statusCode}");
     }
+    
   }
 
   savePref(int value, String email, String fullname, String id) async {
@@ -235,12 +251,12 @@ class _RegisterState extends State<Register> {
 
     if(value == 1){
       setState(() {
-        Toast.show(pesan, context);
+        Toast.show(pesan);
         Navigator.pop(context);
         print(pesan);
       });
     } else {
-      Toast.show(pesan, context);
+      Toast.show(pesan);
       print(pesan);
     }
   }
